@@ -80,7 +80,7 @@ body{
     background-color: rgb(5,255,185);
 }
 .winning-message{
-    display: flex;
+    display: none;
     position: fixed;
     top: 0px;
     left: 0px;

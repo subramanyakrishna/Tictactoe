@@ -1,4 +1,4 @@
-let board;
+let originalBoard;
 const Human = 'o';
 const Robot = 'x';
 const winning_combinaion=[
@@ -17,7 +17,7 @@ startDGame();
 function startDGame(){
     const winmessage = document.getElementById("winning-message");
     winmessage.classList.remove("my-class");
-    board = Array.from(Array(9).keys());
+    originalBoard = Array.from(Array(9).keys());
     cells.forEach(cell=>{
         cell.classList.remove("x");
         cell.classList.remove("o");
@@ -28,21 +28,27 @@ function startDGame(){
 
 function Clicked(CellClicked){
     Show(CellClicked.target.id,Human);
+    console.log(CellClicked.target.id)
 }
 
 function Show(CellId,player){
-    board[CellId] = player;
+    originalBoard[CellId] = player;
     const Selected = document.getElementById(CellId);
     if ((!Selected.classList.contains("o"))&& (player == 'o')){
         Selected.classList.add("o");
     } else if((!Selected.classList.contains("x"))&&(player == 'x')) {
         Selected.classList.add("x");
     }
-    // let gameWon = checkWinning(board,player);
-    // if(gameWon) gameOver(gameWon);
+    let gameWon = checkWhoWon(originalBoard,player);
+    if(gameWon) gameOver(gameWon);
 }
 
-// function checkWinning(board,player){
-//     let plays = board.reduce((a,e,i)=>
-//     )
-// }
+function checkWhoWon(board,player){
+    let plays = board.reduce((a,e,i)=>
+    (e===player) ? a.concat(i):a,[])
+    let gameWon = null;
+    for(let [index,win] of winning_combinaion.entries()){
+        if(win.every(element=>plays.indexOf(elem>-1)))
+    }
+
+}
