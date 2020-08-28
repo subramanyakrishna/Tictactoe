@@ -13,27 +13,28 @@ const WINNING_COMBINATION=[
     [6,7,8]
 ];
 //selecting all cells 
-const cells = document.querySelectorAll(".cell");
+let cells = document.querySelectorAll(".cell");
 
 startDGame();
 //Starting the game 
 function startDGame(){
     const winmessage = document.getElementById("winning-message");
-    winmessage.classList.remove("my-class");
+    winmessage.classList.remove("show-winning-message");
     originalBoard = Array.from(Array(9).keys());
     cells.forEach(cell=>{
         cell.classList.remove("x");
         cell.classList.remove("o");
-
         //adding event listener to the every cells
         cell.addEventListener('click',Clicked,false);
-    })
-    
+        cell.style.backgroundColor="rgb(5,255,185)";
+    });
 }
 //Displaying the o when it is clicked by human player
-function Clicked(CellClicked){
+function Clicked(CellClicked){ 
+    if (typeof originalBoard[CellClicked.target.id]=='number'){
     Show(CellClicked.target.id,HUMAN);
-    if(!CheckTie()) turn(bestSpot(),ROBOT);
+    if(!CheckTie()) Show(bestSpot(),ROBOT);
+    }
     // console.log("clicked " + CellClicked.target.id)
 }
 //show fuction 
@@ -76,5 +77,27 @@ function gameOver(gameWon){
     for(let i=0;i<cells.length;i++){
         cells[i].removeEventListener('click',Clicked,false);
     }
+    declareWinner(gameWon.player==HUMAN?"You Win":"You Lose");
 }
-
+function emptySquares(){
+    return originalBoard.filter(s=>typeof s =='number');
+}
+function bestSpot(){
+    return emptySquares()[0];
+}
+function CheckTie(){
+    if(emptySquares().length==0){
+        for (let i = 0; i< cells.length; i++) {
+            cells[i].style.backgroundColor = "green";
+            cells[i].removeEventListener('click',Clicked,false);
+        }
+        declareWinner("Tie Game!");
+        return true;
+    }
+    return false;
+}
+function declareWinner(who){
+    let winmessage = document.getElementById("winning-message");
+    winmessage.classList.add("show-winning-message");
+    document.getElementById("winning-message-text").innerText=who;
+}

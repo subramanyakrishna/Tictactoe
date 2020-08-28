@@ -105,6 +105,6 @@ body{
 .winning-message button:hover{
     background-color:rgb(5,255,185);
 }
-.show-winning-message{
+.winning-message.show-winning-message{
     display: flex;
 }
