@@ -36,12 +36,13 @@ function startDGame(){
 function Clicked(CellClicked){ 
     if (typeof originalBoard[CellClicked.target.id]=='number'){
         Show(CellClicked.target.id,HUMAN);
-        if(!wonornot)Show(bestSpot(),ROBOT);
+
+        if(!wonornot) { setTimeout(() => { Show(bestSpot(),ROBOT); }, 500); }
+        
     }
 }
 //show fuction 
 function Show(CellId,player){
-    // console.log("Show :" +player);
 
     originalBoard[CellId] = player;
 
@@ -70,6 +71,17 @@ function checkWhoWon(board,player){
     if(!gameWon) CheckTie();
     return gameWon;
 }
+function checkWhoWon1(board,player){
+    let plays = board.reduce((accumulator,curcell,indexofCell)=>(curcell===player)? accumulator.concat(indexofCell):accumulator,[]);
+    let gameWon = null;
+    for(let [index,win] of WINNING_COMBINATION.entries()){
+        if(win.every(element=>(plays.indexOf(element)>-1))){
+            gameWon = { index: index, player : player} 
+            break;
+        }
+    }
+    return gameWon;
+}
 
 function gameOver(gameWon){
     for(let index of WINNING_COMBINATION[gameWon.index]){
@@ -84,7 +96,7 @@ function emptySquares(){
     return originalBoard.filter( s => typeof s =='number');
 }
 function bestSpot(){
-    return emptySquares()[0];
+    return minimax(originalBoard, ROBOT).index;
 }
 
 function CheckTie(){
@@ -104,12 +116,12 @@ function declareWinner(who){
     document.getElementById("winning-message-text").innerText=who;
 }
 
-function minmax(newBoard,player){
-    var availSpots = emptySquares();
+function minimax(newBoard, player) {
+	var availSpots = emptySquares();
 
-	if (checkWhoWon(newBoard, HUMAN)) {
+	if (checkWhoWon1(newBoard, HUMAN)) {
 		return {score: -10};
-	} else if (checkWhoWon(newBoard, ROBOT)) {
+	} else if (checkWhoWon1(newBoard, ROBOT)) {
 		return {score: 10};
 	} else if (availSpots.length === 0) {
 		return {score: 0};
