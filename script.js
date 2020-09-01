@@ -1,6 +1,7 @@
 let originalBoard;
 const HUMAN = 'o';
 const ROBOT = 'x';
+let wonornot = false;
 //different winning combination
 const WINNING_COMBINATION=[
     [0,1,2],
@@ -14,10 +15,12 @@ const WINNING_COMBINATION=[
 ];
 //selecting all cells 
 let cells = document.querySelectorAll(".cell");
-
 startDGame();
+
 //Starting the game 
 function startDGame(){
+    originalBoard=[];
+    wonornot = false;
     const winmessage = document.getElementById("winning-message");
     winmessage.classList.remove("show-winning-message");
     originalBoard = Array.from(Array(9).keys());
@@ -32,13 +35,13 @@ function startDGame(){
 //Displaying the o when it is clicked by human player
 function Clicked(CellClicked){ 
     if (typeof originalBoard[CellClicked.target.id]=='number'){
-    Show(CellClicked.target.id,HUMAN);
-    if(!CheckTie()) Show(bestSpot(),ROBOT);
+        Show(CellClicked.target.id,HUMAN);
+        if(!wonornot)Show(bestSpot(),ROBOT);
     }
-    // console.log("clicked " + CellClicked.target.id)
 }
 //show fuction 
 function Show(CellId,player){
+    // console.log("Show :" +player);
 
     originalBoard[CellId] = player;
 
@@ -48,25 +51,23 @@ function Show(CellId,player){
     } else if((!Selected.classList.contains("x"))&&(player == 'x')) {
         Selected.classList.add("x");
     }
-
     let gameWon = checkWhoWon(originalBoard,player);
-    if(gameWon) { 
-        // console.log("game over")
+    if(gameWon){ 
+        wonornot = true;
         gameOver(gameWon); 
-    };
-    console.log("OriginalBoard :" + originalBoard);
+    }
 }
 
 function checkWhoWon(board,player){
-    let plays = board.reduce((accumulator,curcell,indexofCell)=>(curcell===player) ? accumulator.concat(indexofCell):accumulator,[]);
-    console.log("played by human  : "+ plays);
+    let plays = board.reduce((accumulator,curcell,indexofCell)=>(curcell===player)? accumulator.concat(indexofCell):accumulator,[]);
     let gameWon = null;
     for(let [index,win] of WINNING_COMBINATION.entries()){
         if(win.every(element=>(plays.indexOf(element)>-1))){
-            gameWon = { index:index, player : player} 
+            gameWon = { index: index, player : player} 
             break;
         }
     }
+    if(!gameWon) CheckTie();
     return gameWon;
 }
 
@@ -80,11 +81,12 @@ function gameOver(gameWon){
     declareWinner(gameWon.player==HUMAN?"You Win":"You Lose");
 }
 function emptySquares(){
-    return originalBoard.filter(s=>typeof s =='number');
+    return originalBoard.filter( s => typeof s =='number');
 }
 function bestSpot(){
     return emptySquares()[0];
 }
+
 function CheckTie(){
     if(emptySquares().length==0){
         for (let i = 0; i< cells.length; i++) {
@@ -100,4 +102,55 @@ function declareWinner(who){
     let winmessage = document.getElementById("winning-message");
     winmessage.classList.add("show-winning-message");
     document.getElementById("winning-message-text").innerText=who;
+}
+
+function minmax(newBoard,player){
+    var availSpots = emptySquares();
+
+	if (checkWhoWon(newBoard, HUMAN)) {
+		return {score: -10};
+	} else if (checkWhoWon(newBoard, ROBOT)) {
+		return {score: 10};
+	} else if (availSpots.length === 0) {
+		return {score: 0};
+	}
+	var moves = [];
+	for (var i = 0; i < availSpots.length; i++) {
+		var move = {};
+		move.index = newBoard[availSpots[i]];
+		newBoard[availSpots[i]] = player;
+
+		if (player == ROBOT) {
+			var result = minimax(newBoard, HUMAN);
+			move.score = result.score;
+		} else {
+			var result = minimax(newBoard, ROBOT);
+			move.score = result.score;
+		}
+
+		newBoard[availSpots[i]] = move.index;
+
+		moves.push(move);
+	}
+
+	var bestMove;
+	if(player === ROBOT) {
+		var bestScore = -10000;
+		for(var i = 0; i < moves.length; i++) {
+			if (moves[i].score > bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	} else {
+		var bestScore = 10000;
+		for(var i = 0; i < moves.length; i++) {
+			if (moves[i].score < bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	}
+
+	return moves[bestMove];
 }
