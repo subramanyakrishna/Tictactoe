@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 :root{
-    --cell-size:100px;
+    --cell-size:90px;
     --lit-size :calc(var(--cell-size)*0.9);
     --outercircle-size:calc(var(--lit-size)*.9);
     --innercircle-size:calc(var(--lit-size)*.7);
@@ -12,7 +12,9 @@ body{
     margin: 0px;
     background-color: rgb(5,255,185);
 }
+.welcome{
 
+}
 .board{
     width: 100vw;
     height: 100vh;
@@ -33,18 +35,7 @@ body{
     justify-content: center;
     align-items: center;
 }
-/* .cell:first-child,.cell:nth-child(2),.cell:nth-child(3){
-    border-top:none;
-}
-.cell:nth-child(3n+1){
-    border-left: none;
-}
-.cell:nth-child(3n+3){
-    border-right: none;
-}
-.cell:last-child,.cell:nth-child(7),.cell:nth-child(8){
-    border-bottom:none;
-} */
+
 .cell.x,.cell.o{
     cursor: not-allowed;
 }

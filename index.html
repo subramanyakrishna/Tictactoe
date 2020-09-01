@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-
-    <title>TicTacToe</title>
+    <link rel="stylesheet" href="index.css">
+    <title>TicTocToe</title>
 </head>
 <body>
-    <div class="board" id="board">
-        <div class="cell dash" id="0"></div>
-        <div class="cell " id="1"></div>
-        <div class="cell" id="2"></div>
-        <div class="cell" id="3"></div>
-        <div class="cell" id="4"></div>
-        <div class="cell" id="5"></div>
-        <div class="cell" id="6"></div>
-        <div class="cell" id="7"></div>
-        <div class="cell" id="8"></div>
+    <div class="box-container">
+        <div class="welcome">
+            <p>Welcome to TicTocToe</p>
+        </div>
+        <div class="container" >
+            <p>2-Player</p>
+            <a href="./TwoPlayer.html"><button >Enter</button></a>
+        </div>
+        <div class="container" >
+            <p>Impossible to Win </p>
+            <a href="./HumanVsComp.html"><button >Enter</button></a>
+        </div>
     </div>
-    <div class="winning-message" id="winning-message">
-        <div class="winning-message-text" id="winning-message-text" ></div>
-        <button id="restartButton" onclick="startDGame()">Restart </button>
-    </div>
-    <script type="text/javascript" src="script.js"></script>
+    
 </body>
 </html>
