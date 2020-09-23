@@ -41,10 +41,11 @@ function Clicked(CellClicked){
     
     if (typeof originalBoard[CellClicked.target.id]=='number'){
         if (i == j) {
+            //fixes made
             i = i + 1;
             Show(CellClicked.target.id,HUMAN);
             if(!wonornot) { setTimeout(() => { 
-
+                //fixes made
                 j = j + 1;
                 Show(bestSpot(),ROBOT); 
             
