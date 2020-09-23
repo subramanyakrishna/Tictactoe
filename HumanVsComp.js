@@ -48,12 +48,12 @@ function Clicked(CellClicked){
                 j = j + 1;
                 Show(bestSpot(),ROBOT); 
             
-            }, 500);
-        }
+                }, 500);
+            }
 
         
         
-    }
+        }
         
         
     }
