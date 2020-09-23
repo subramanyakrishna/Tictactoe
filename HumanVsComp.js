@@ -1,6 +1,8 @@
 let originalBoard;
 const HUMAN = 'o';
 const ROBOT = 'x';
+var i = 0;
+var j = 0;
 let wonornot = false;
 //different winning combination
 const WINNING_COMBINATION=[
@@ -28,22 +30,37 @@ function startDGame(){
         cell.classList.remove("x");
         cell.classList.remove("o");
         //adding event listener to the every cells
+        
         cell.addEventListener('click',Clicked,false);
+        
         cell.style.backgroundColor="rgb(5,255,185)";
     });
 }
 //Displaying the o when it is clicked by human player
 function Clicked(CellClicked){ 
+    
     if (typeof originalBoard[CellClicked.target.id]=='number'){
-        Show(CellClicked.target.id,HUMAN);
+        if (i == j) {
+            i = i + 1;
+            Show(CellClicked.target.id,HUMAN);
+            if(!wonornot) { setTimeout(() => { 
 
-        if(!wonornot) { setTimeout(() => { Show(bestSpot(),ROBOT); }, 500); }
+                j = j + 1;
+                Show(bestSpot(),ROBOT); 
+            
+            }, 500);
+        }
+
+        
         
     }
+        
+        
+    }
+    
 }
 //show fuction 
 function Show(CellId,player){
-
     originalBoard[CellId] = player;
 
     const Selected = document.getElementById(CellId);
